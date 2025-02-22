@@ -46,4 +46,12 @@ RUN set -x && wget -nc https://lab.ndl.go.jp/dataset/ndlkotensekiocr/layoutmodel
 RUN set -x && cd ${PROJECT_DIR}/src/text_kotenseki_recognition/ && unzip -o model-ver2.zip
 RUN set -x && pip install mmcv==2.0.0 -f https://download.openmmlab.com/mmcv/dist/cu118/torch2.0/index.html
 
+# http server
+RUN apt-get update && apt-get install -y
+RUN apt-get install -y curl
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - 
+RUN apt-get install -y nodejs
+
+CMD [ "node", "http-server/server.js" ]
+
 WORKDIR ${PROJECT_DIR}
