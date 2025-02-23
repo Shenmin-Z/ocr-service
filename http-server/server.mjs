@@ -49,12 +49,13 @@ app.post('/start-ocr', upload.fields([{ name: 'image' }]), async (req, res) => {
     const { bookName } = req.body
     await runNDL_OCR(bookName)
     const result = getResult(bookName)
-    deleteFiles()
     res.json({ status: 'ok', result })
+    busy = false
+    deleteFiles()
   } catch (e) {
     res.json({ status: 'failed' })
-  } finally {
     busy = false
+    deleteFiles()
   }
 })
 

@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process'
 import { resolve, dirname, basename } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { readFileSync, rmSync, mkdirSync } from 'node:fs'
+import { readFileSync, rmSync, mkdirSync, existsSync } from 'node:fs'
 import { globSync } from 'glob'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -10,7 +10,7 @@ const __dirname = dirname(__filename)
 export async function runNDL_OCR(bookName) {
   const input = resolve(__dirname, 'uploads', bookName)
   const output = resolve(__dirname, 'output', bookName)
-  mkdirSync(output, { recursive: true })
+  mkdirSync(resolve(__dirname, 'output'))
   const ndlOcr = spawn('python', ['main.py', 'infer', input, output, '-a'], {
     cwd: resolve(__dirname, '../'),
   })
@@ -48,7 +48,9 @@ export function deleteFiles() {
   const input = resolve(__dirname, 'uploads')
   const output = resolve(__dirname, 'output')
 
-  ;[(input, output)].forEach((dir) => {
-    rmSync(dir, { recursive: true, force: true })
+  ;[input, output].forEach((dir) => {
+    if (existsSync(dir)) {
+      rmSync(dir, { recursive: true, force: true })
+    }
   })
 }
