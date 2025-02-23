@@ -33,6 +33,9 @@ const storage = multer.diskStorage({
 })
 const upload = multer({
   storage,
+  fileFilter(req, file, cb) {
+    cb(null, !busy)
+  },
 })
 
 let busy = false
