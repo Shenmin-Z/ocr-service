@@ -1,4 +1,4 @@
-TAG=kotenocr-cli-server
+TAG=ocr-server
 DOCKERIGNORE=docker/dockerignore
 DOCKERFILE=docker/Dockerfile
 cp ${DOCKERIGNORE} .dockerignore

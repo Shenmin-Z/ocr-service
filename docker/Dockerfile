@@ -52,6 +52,11 @@ RUN apt-get install -y curl
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - 
 RUN apt-get install -y nodejs
 
-CMD [ "node", "http-server/server.js" ]
+COPY http-server/package.json /tmp/package.json
+COPY http-server/package-lock.json /tmp/package-lock.json
+RUN cd /tmp && npm install
+RUN mkdir -p ${PROJECT_DIR} && cp -a /tmp/node_modules ${PROJECT_DIR}
+
+CMD [ "node", "http-server/server.mjs" ]
 
 WORKDIR ${PROJECT_DIR}
